@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Presentacione extends Model
 {
     use HasFactory;
+
+    public function productos(){
+        return $this->hasMany(Producto::class);
+    }
+
+    public function caracteristica(){
+        return $this->hasMany(Caracteristica::class);
+    }
 }

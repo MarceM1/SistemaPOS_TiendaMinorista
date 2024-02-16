@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Caracteristica extends Model
 {
     use HasFactory;
+
+    public function categoria()
+    {
+        return $this->hasMany(Categoria::class);
+    }
+
+    public function marca()
+    {
+        return $this->hasMany(Marca::class);
+    }
+
+    public function presentacione()
+    {
+        return $this->hasMany(Presentacione::class);
+    }
 }

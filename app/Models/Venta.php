@@ -5,17 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Compra extends Model
+class Venta extends Model
 {
     use HasFactory;
 
-    public function provedore(){
-        return $this->belongsTo(Provedore::class);
+    public function cliente(){
+        return $this->belongsTo(Cliente::class);
     }
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function comprobante(){
         return $this->belongsTo(Comprobante::class);
     }
+
     public function productos(){
         return $this->belongsToMany(Producto::class)->withTimestamps()->withPivot('cantidad', 'precio_compra','precio_venta');
     }
