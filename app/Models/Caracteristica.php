@@ -9,6 +9,8 @@ class Caracteristica extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nombre', 'descripcion'];
+
     public function categoria()
     {
         return $this->hasMany(Categoria::class);
