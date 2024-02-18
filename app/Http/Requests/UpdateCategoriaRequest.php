@@ -20,12 +20,12 @@ class UpdateCategoriaRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {   
+    {
         $categoria = $this->route('categoria');
         $caracteristicaId = $categoria->caracteristica->id;
 
         return [
-            'nombre'=> 'required|max:60|unique:caracteristicas,nombre,' . $caracteristicaId,
+            'nombre' => 'required|max:60|unique:caracteristicas,nombre,' . $caracteristicaId,
             'descripcion' => 'nullable|max:255'
         ];
     }

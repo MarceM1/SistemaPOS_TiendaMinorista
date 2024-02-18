@@ -17,7 +17,7 @@ class categoriaController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::with('caracteristica')->get();
+        $categorias = Categoria::with('caracteristica')->latest()->get();
 
         return view('categorias.index', compact('categorias'));
     }
@@ -39,9 +39,9 @@ class categoriaController extends Controller
         try {
             DB::beginTransaction();
 
-            $caracteristica=Caracteristica::create($request->validated());    
+            $caracteristica = Caracteristica::create($request->validated());
             $caracteristica->categoria()->create([
-                'característica_id'=> $caracteristica->id
+                'característica_id' => $caracteristica->id
             ]);
 
             DB::commit();
@@ -49,7 +49,7 @@ class categoriaController extends Controller
             DB::rollBack();
         }
 
-        return redirect()->route('categorias.index')->with('Success','Categoría registrada.');
+        return redirect()->route('categorias.index')->with('Success', 'Categoría creada!');
     }
 
     /**
@@ -64,9 +64,9 @@ class categoriaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Categoria $categoria, Caracteristica $caracteristica)
-    {   
-         
-        return view('categorias.edit',compact(['categoria', 'caracteristica'] ));
+    {
+
+        return view('categorias.edit', compact(['categoria', 'caracteristica']));
     }
 
     /**
@@ -74,16 +74,29 @@ class categoriaController extends Controller
      */
     public function update(UpdateCategoriaRequest $request, Categoria $categoria)
     {
-        Caracteristica::where('id', $categoria->caracteristica->id)->update($request->validated());
-
-        return redirect()->route('categorias.index')->with('Success','Categoría actualizada');
+        // Caracteristica::where('id', $categoria->caracteristica->id)->update($request->validated());
+        $categoria->caracteristica->update($request->all());
+        return redirect()->route('categorias.index')->with('Success', 'Categoría actualizada!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
+    {   
+        $message = "";
+        $categoria = Categoria::find($id);
+
+        if ($categoria->caracteristica->estado == 1) {
+            Caracteristica::where('id', $categoria->caracteristica->id)->update(['estado' => '0']);
+            $message = "Categoría eliminada!";
+        } else {
+            Caracteristica::where('id', $categoria->caracteristica->id)->update(['estado' => '1']);
+            $message = "Categoría restaurada!";
+        };
+
+
+
+        return redirect()->route('categorias.index')->with('Success', $message);
     }
 }
