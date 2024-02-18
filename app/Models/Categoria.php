@@ -16,6 +16,6 @@ class Categoria extends Model
     }
 
     public function caracteristica(){
-        return $this->hasMany(Caracteristica::class);
+        return $this->belongsTo(Caracteristica::class);
     }
 }
